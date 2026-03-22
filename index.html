@@ -1,95 +1,52 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English with Hakam | التطبيق التفاعلي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>English With Hakam | بوابة الطلاب</title>
     <style>
-        :root { --primary: #1a2a6c; --accent: #b21f1f; --gold: #fdbb2d; --light: #f8f9fa; }
-        body { font-family: 'Tajawal', sans-serif; background-color: var(--light); margin: 0; color: #333; }
-        .header { background: linear-gradient(to right, var(--primary), var(--accent)); color: white; padding: 40px 20px; text-align: center; }
-        .main-menu { max-width: 900px; margin: -30px auto 20px; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .unit-title { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; margin: 15px 0; display: inline-block; font-size: 0.9rem; }
-        .lesson-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-        .lesson-card { background: #fff; border: 2px solid #eee; border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.3s; text-align: right; }
-        .lesson-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-        #app-view { display: none; padding: 15px; max-width: 700px; margin: auto; }
-        .chat-container { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .bubble { max-width: 85%; padding: 12px; border-radius: 15px; margin: 8px 0; font-family: 'Poppins', sans-serif; direction: ltr; text-align: left; cursor: pointer; position: relative; line-height: 1.4; }
-        .hakam { align-self: flex-start; background: #e3f2fd; border-left: 5px solid #2196f3; }
-        .zeina { align-self: flex-end; background: #fff3e0; border-right: 5px solid #ff9800; text-align: right; }
-        .slang { color: var(--accent); text-decoration: underline dotted; font-weight: bold; }
-        .controls { margin: 15px 0; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-        button { padding: 8px 16px; border-radius: 20px; border: none; background: var(--primary); color: white; cursor: pointer; font-family: 'Tajawal'; font-size: 0.85rem; }
-        .role-btn { background: var(--gold); color: #000; }
-        .hidden-text { color: transparent !important; background: #eee !important; border: 1px dashed #ccc; }
+        :root { --main: #27ae60; --dark: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 380px; text-align: center; }
+        h1 { color: var(--dark); font-size: 1.8rem; margin-bottom: 0.5rem; }
+        input { width: 100%; padding: 12px; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+        #msg { color: #e74c3c; margin-top: 1rem; display: none; }
     </style>
 </head>
 <body>
-
-<div id="home-view">
-    <div class="header">
-        <h1>English with Hakam 🇬🇧</h1>
-        <p>الملزمة التفاعلية - تعلم الإنجليزية البريطانية</p>
+    <div class="card">
+        <h1>English With Hakam</h1>
+        <p>سجل دخولك للبدء</p>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        <button onclick="login()">دخول</button>
+        <div id="msg">خطأ في البيانات أو الحساب غير نشط</div>
     </div>
-    <div class="main-menu">
-        <div class="unit-title">الوحدة الأولى: التعارف</div>
-        <div class="lesson-grid">
-            <div class="lesson-card" onclick="loadLesson(1)"><strong>Lesson 1</strong><p>Hello, I'm Hakam!</p></div>
-            <div class="lesson-card" onclick="loadLesson(2)"><strong>Lesson 2</strong><p>Home & Origins</p></div>
-            <div class="lesson-card" onclick="loadLesson(3)"><strong>Lesson 3</strong><p>Jobs & Work</p></div>
-            <div class="lesson-card" onclick="loadLesson(4)"><strong>Lesson 4</strong><p>What are you up to?</p></div>
-        </div>
-        <div class="unit-title">الوحدة الثانية: في الخارج</div>
-        <div class="lesson-grid">
-            <div class="lesson-card" onclick="loadLesson(5)"><strong>Lesson 5</strong><p>Ordering Coffee</p></div>
-        </div>
-    </div>
-</div>
 
-<div id="app-view">
-    <div class="controls">
-        <button onclick="goHome()">🏠 القائمة</button>
-        <button class="role-btn" onclick="toggleRole('hakam')">إخفاء دور حكم</button>
-        <button class="role-btn" onclick="toggleRole('zeina')">إخفاء دور زينة</button>
-    </div>
-    <h3 id="lesson-name" style="text-align: center; color: var(--primary);"></h3>
-    <div class="chat-container" id="chat-box"></div>
-    <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 15px;">اضغط على النص للسماع 🔊 | الكلمات الحمراء هي مصطلحات عامية</p>
-</div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-<script>
-    const lessonData = {
-        1: { name: "Hello, I'm Hakam!", content: [{role:'hakam', text:"Alright mate, I'm Hakam.", slang:"Alright mate: هلا يا صاحبي"}, {role:'zeina', text:"Hi Hakam, nice one, good to meet ya.", slang:"Nice one: ممتاز"}] },
-        2: { name: "Whereabouts are you from?", content: [{role:'hakam', text:"Whereabouts are you from originally?", slang:"Whereabouts: أين بالضبط"}, {role:'zeina', text:"I'm from a tiny village up north.", slang:"Up north: في الشمال"}] },
-        3: { name: "What do you do for a living?", content: [{role:'hakam', text:"So, what do you do for a living?", slang:"Living: لقمة العيش"}, {role:'zeina', text:"I'm a freelance designer. It's a bit of a graft.", slang:"Graft: عمل شاق"}] },
-        4: { name: "What are you up to?", content: [{role:'hakam', text:"Morning! You alright?", slang:"You alright?: كيفك؟"}, {role:'zeina', text:"Just grabbing a cuppa. Weather's rubbish!", slang:"Cuppa: شاي / Rubbish: سيء"}] },
-        5: { name: "Can I get a coffee, please?", content: [{role:'zeina', text:"Can I get a large latte to stay, please?", slang:"To stay: محلي (هنا)"}, {role:'hakam', text:"Anything else? That'll be four fifty.", slang:"That'll be: الحساب سيكون"}] }
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyB2E58UMo6N9bOHCSTrnTlpN090-q0IqYo",
+            authDomain: "englsih-with-hakam.firebaseapp.com",
+            projectId: "englsih-with-hakam",
+            storageBucket: "englsih-with-hakam.appspot.com",
+            messagingSenderId: "905740835462",
+            appId: "1:905740835462:web:55d7420be28c0b89b439c0"
+        };
 
-    let hiddenRole = null;
-    function loadLesson(id) {
-        const lesson = lessonData[id];
-        document.getElementById('home-view').style.display = 'none';
-        document.getElementById('app-view').style.display = 'block';
-        document.getElementById('lesson-name').innerText = lesson.name;
-        const chatBox = document.getElementById('chat-box');
-        chatBox.innerHTML = '';
-        lesson.content.forEach(line => {
-            const div = document.createElement('div');
-            div.className = `bubble ${line.role}`;
-            if(hiddenRole === line.role) div.classList.add('hidden-text');
-            let txt = line.text;
-            if(line.slang) { const s = line.slang.split(':')[0]; txt = txt.replace(s, `<span class="slang" title="${line.slang}">${s}</span>`); }
-            div.innerHTML = `<strong>${line.role.toUpperCase()}:</strong><br>${txt}`;
-            div.onclick = () => { if(div.classList.contains('hidden-text')) div.classList.remove('hidden-text'); else speak(line.text); };
-            chatBox.appendChild(div);
-        });
-    }
-    function toggleRole(r) { hiddenRole = (hiddenRole === r) ? null : r; loadLesson(Object.keys(lessonData).find(k => lessonData[k].name === document.getElementById('lesson-name').innerText)); }
-    function goHome() { document.getElementById('home-view').style.display = 'block'; document.getElementById('app-view').style.display = 'none'; hiddenRole = null; }
-    function speak(t) { const m = new SpeechSynthesisUtterance(t); m.lang = 'en-GB'; window.speechSynthesis.speak(m); }
-</script>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.login = function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('pass').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => { alert("أهلاً بك يا بطل! تم الدخول بنجاح."); })
+                .catch(() => { document.getElementById('msg').style.display = 'block'; });
+        }
+    </script>
 </body>
 </html>
