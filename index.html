@@ -1,17 +1,69 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English With Hakam</title>
+    <style>
+        :root { --main: #27ae60; --dark: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 350px; text-align: center; }
+        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #219150; }
+        #msg { color: #e74c3c; margin-top: 10px; font-size: 0.9rem; display: none; background: #fdedec; padding: 8px; border-radius: 5px; }
+    </style>
+</head>
+<body>
 
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyBevYgKumOefR8llKZXgLu4neOptOO9Dzc",
-  authDomain: "english-with-hakam.firebaseapp.com",
-  projectId: "english-with-hakam",
-  storageBucket: "english-with-hakam.firebasestorage.app",
-  messagingSenderId: "370837955889",
-  appId: "1:370837955889:web:ca95df27b0d98409f43c10"
-};
+<div class="card">
+    <h2>English With Hakam</h2>
+    <p>سجل دخولك للبدء</p>
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="pass" placeholder="كلمة المرور">
+    <button onclick="login()">دخول الطالب</button>
+    <div id="msg"></div>
+</div>
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  // إعدادات مشروعك الجديد (تم استخراجها من صورتك الأخيرة بدقة)
+  const firebaseConfig = {
+    apiKey: "AIzaSyBevYgKumOefR8llKZXgLu4neOptOO9Dzc",
+    authDomain: "english-with-hakam.firebaseapp.com",
+    projectId: "english-with-hakam",
+    storageBucket: "english-with-hakam.firebasestorage.app",
+    messagingSenderId: "370837955889",
+    appId: "1:370837955889:web:ca95df27b0d98409f43c10"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.login = function() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('pass').value;
+    const msg = document.getElementById('msg');
+    msg.style.display = 'none';
+
+    if(!email || !password) {
+        msg.style.display = 'block';
+        msg.innerText = "يرجى إدخال البريد وكلمة السر";
+        return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+          alert("أهلاً بك يا أستاذ حكم! تم الدخول بنجاح.");
+      })
+      .catch((error) => {
+          msg.style.display = 'block';
+          if(error.code === 'auth/invalid-credential') msg.innerText = "الإيميل أو كلمة السر خطأ";
+          else msg.innerText = "خطأ: " + error.code;
+      });
+  }
+</script>
+</body>
+</html>
