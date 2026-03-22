@@ -9,44 +9,64 @@
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .card { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 380px; text-align: center; }
         h1 { color: var(--dark); font-size: 1.8rem; margin-bottom: 0.5rem; }
-        input { width: 100%; padding: 12px; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
-        #msg { color: #e74c3c; margin-top: 1rem; display: none; }
+        p { color: #666; margin-bottom: 1.5rem; }
+        input { width: 100%; padding: 12px; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        button:hover { background: #219150; }
+        #msg { color: #e74c3c; margin-top: 1rem; display: none; background: #fdedec; padding: 8px; border-radius: 5px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>English With Hakam</h1>
-        <p>سجل دخولك للبدء</p>
-        <input type="email" id="email" placeholder="البريد الإلكتروني">
-        <input type="password" id="pass" placeholder="كلمة المرور">
-        <button onclick="login()">دخول</button>
-        <div id="msg">خطأ في البيانات أو الحساب غير نشط</div>
-    </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+<div class="card">
+    <h1>English With Hakam</h1>
+    <p>سجل دخولك للبدء</p>
+    <input type="email" id="email" placeholder="البريد الإلكتروني">
+    <input type="password" id="pass" placeholder="كلمة المرور">
+    <button onclick="login()">دخول الطالب</button>
+    <div id="msg"></div>
+</div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyB2E58UMo6N9bOHCSTrnTlpN090-q0IqYo",
-            authDomain: "englsih-with-hakam.firebaseapp.com",
-            projectId: "englsih-with-hakam",
-            storageBucket: "englsih-with-hakam.appspot.com",
-            messagingSenderId: "905740835462",
-            appId: "1:905740835462:web:55d7420be28c0b89b439c0"
-        };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+  // إعدادات Firebase الخاصة بك من الصورة 55974
+  const firebaseConfig = {
+    apiKey: "AIzaSyB2E58UMo6N9bOHCSTrnTlpN090-q0IqYo",
+    authDomain: "englsih-with-hakam.firebaseapp.com",
+    projectId: "englsih-with-hakam",
+    storageBucket: "englsih-with-hakam.appspot.com",
+    messagingSenderId: "905740835462",
+    appId: "1:905740835462:web:55d7420be28c0b89b439c0"
+  };
 
-        window.login = function() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('pass').value;
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => { alert("أهلاً بك يا بطل! تم الدخول بنجاح."); })
-                .catch(() => { document.getElementById('msg').style.display = 'block'; });
-        }
-    </script>
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  window.login = function() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('pass').value;
+    const msgDiv = document.getElementById('msg');
+    msgDiv.style.display = 'none';
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+          alert("تم الدخول بنجاح! مبروك يا أستاذ حكم.");
+          // هنا سنضع كود صفحة الدروس لاحقاً
+      })
+      .catch((error) => {
+          msgDiv.style.display = 'block';
+          if (error.code === 'auth/unauthorized-domain') {
+              msgDiv.innerText = "خطأ: يجب إضافة رابط الموقع في Firebase Settings";
+          } else if (error.code === 'auth/invalid-credential') {
+              msgDiv.innerText = "الإيميل أو كلمة السر خطأ";
+          } else {
+              msgDiv.innerText = "حدث خطأ: " + error.code;
+          }
+      });
+  }
+</script>
+
 </body>
 </html>
