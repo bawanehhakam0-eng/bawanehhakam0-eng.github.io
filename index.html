@@ -1,612 +1,95 @@
-ِ<!DOCTYPE html>
-<html lang="en">
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>English with Hakam — Street Trainer</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --cream: #FAF6F0;
-    --cream-dark: #F0EAE0;
-    --sand: #E8DDD0;
-    --brown: #8B6F52;
-    --dark: #2A1F14;
-    --mid: #6B5744;
-    --blue: #1A3A6B;
-    --blue-light: #E8EFF8;
-    --green: #2D5A27;
-    --green-light: #E8F2E7;
-    --red: #8B2020;
-    --red-light: #FDEAEA;
-    --gold: #C8963A;
-    --gold-light: #FDF3E3;
-    --flag-red: #CF142B;
-    --flag-blue: #00247D;
-  }
-
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--cream);
-    color: var(--dark);
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ── SCREENS ── */
-  .screen { display: none; min-height: 100vh; }
-  .screen.active { display: flex; flex-direction: column; }
-
-  /* ── HOME ── */
-  #home {
-    background: var(--cream);
-    position: relative;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    text-align: center;
-    overflow: hidden;
-  }
-
-  .home-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 600px 400px at 80% 20%, rgba(200,150,58,.08) 0%, transparent 70%),
-      radial-gradient(ellipse 500px 500px at -10% 80%, rgba(26,58,107,.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 32px;
-  }
-  .brand-flag {
-    width: 28px; height: 18px; border-radius: 3px; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-  .flag-row { flex: 1; display: flex; }
-  .flag-blue { background: var(--flag-blue); flex: 1; }
-  .flag-red { background: var(--flag-red); }
-  .flag-white { background: white; }
-  .brand-text {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px; font-weight: 700;
-    color: var(--mid); letter-spacing: .02em;
-  }
-
-  .home-title {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(36px, 8vw, 64px);
-    font-weight: 800;
-    color: var(--dark);
-    line-height: 1.0;
-    margin-bottom: 8px;
-    letter-spacing: -.02em;
-  }
-  .home-title span { color: var(--gold); }
-
-  .home-sub {
-    font-size: 16px; color: var(--mid);
-    margin-bottom: 40px; line-height: 1.5;
-  }
-
-  .mode-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    width: 100%; max-width: 420px;
-    margin: 0 auto 32px;
-  }
-  .mode-card {
-    background: white;
-    border: 1.5px solid var(--sand);
-    border-radius: 16px;
-    padding: 18px 12px;
-    cursor: pointer;
-    transition: all .2s;
-    text-align: center;
-  }
-  .mode-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-  .mode-card.selected { border-color: var(--gold); background: var(--gold-light); }
-  .mode-icon { font-size: 24px; margin-bottom: 8px; }
-  .mode-name { font-family: 'Syne', sans-serif; font-size: 12px; font-weight: 700; color: var(--dark); }
-  .mode-desc { font-size: 10px; color: var(--mid); margin-top: 3px; }
-
-  .start-btn {
-    display: inline-block;
-    background: var(--dark);
-    color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px; font-weight: 700;
-    padding: 16px 48px;
-    border-radius: 50px;
-    border: none; cursor: pointer;
-    letter-spacing: .02em;
-    transition: all .2s;
-  }
-  .start-btn:hover { background: var(--blue); transform: translateY(-1px); }
-
-  .home-stats {
-    margin-top: 32px;
-    display: flex; gap: 24px; justify-content: center;
-  }
-  .stat { text-align: center; }
-  .stat-n { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--dark); }
-  .stat-l { font-size: 11px; color: var(--mid); }
-
-  /* ── GAME ── */
-  #game { background: var(--cream); }
-
-  .game-header {
-    background: white;
-    border-bottom: 1px solid var(--sand);
-    padding: 14px 20px;
-    display: flex; align-items: center; gap: 12px;
-  }
-  .back-btn {
-    width: 32px; height: 32px; border-radius: 50%;
-    border: 1px solid var(--sand);
-    background: white; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 16px; color: var(--mid);
-    flex-shrink: 0; transition: all .15s;
-  }
-  .back-btn:hover { border-color: var(--brown); color: var(--dark); }
-
-  .progress-wrap { flex: 1; }
-  .progress-meta {
-    display: flex; justify-content: space-between;
-    font-size: 11px; color: var(--mid); margin-bottom: 5px;
-  }
-  .progress-track {
-    height: 5px; background: var(--sand);
-    border-radius: 3px; overflow: hidden;
-  }
-  .progress-bar {
-    height: 100%; background: var(--gold);
-    border-radius: 3px; transition: width .4s ease;
-  }
-
-  .score-badge {
-    background: var(--gold-light);
-    border: 1px solid rgba(200,150,58,.3);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-family: 'Syne', sans-serif;
-    font-size: 13px; font-weight: 700; color: var(--gold);
-    flex-shrink: 0;
-  }
-
-  .lesson-dots {
-    display: flex; gap: 5px; padding: 12px 20px;
-    flex-wrap: wrap; background: white;
-    border-bottom: 1px solid var(--sand);
-  }
-  .ldot {
-    width: 26px; height: 26px; border-radius: 50%;
-    border: 1.5px solid var(--sand);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px; font-weight: 600; color: var(--mid);
-    transition: all .25s; background: white;
-  }
-  .ldot.done { background: var(--green-light); border-color: var(--green); color: var(--green); }
-  .ldot.active { background: var(--gold); border-color: var(--gold); color: white; }
-
-  .question-area {
-    flex: 1; padding: 24px 20px 20px;
-    display: flex; flex-direction: column;
-    max-width: 500px; margin: 0 auto; width: 100%;
-  }
-
-  .direction-tag {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--blue-light); border-radius: 20px;
-    padding: 5px 14px; margin-bottom: 16px;
-    font-size: 11px; font-weight: 600; color: var(--blue);
-    letter-spacing: .03em; align-self: flex-start;
-  }
-
-  .question-card {
-    background: white;
-    border: 1.5px solid var(--sand);
-    border-radius: 20px;
-    padding: 28px 24px;
-    text-align: center;
-    margin-bottom: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-  .question-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--flag-blue) 33%, white 33% 66%, var(--flag-red) 66%);
-  }
-  .q-lesson {
-    font-size: 10px; font-weight: 600; letter-spacing: .08em;
-    color: var(--brown); text-transform: uppercase; margin-bottom: 10px;
-  }
-  .q-word {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(22px, 5vw, 32px);
-    font-weight: 800; color: var(--dark);
-    line-height: 1.2; margin-bottom: 6px;
-  }
-  .q-hint { font-size: 12px; color: var(--mid); }
-
-  .options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px; margin-bottom: 16px;
-  }
-  .opt-btn {
-    background: white;
-    border: 1.5px solid var(--sand);
-    border-radius: 14px;
-    padding: 14px 12px;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px; font-weight: 500;
-    color: var(--dark); cursor: pointer;
-    line-height: 1.4; text-align: center;
-    transition: all .15s;
-    min-height: 60px;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .opt-btn:hover:not(:disabled) {
-    border-color: var(--gold); background: var(--gold-light);
-    transform: translateY(-1px);
-  }
-  .opt-btn:disabled { cursor: default; }
-  .opt-btn.correct {
-    background: var(--green-light); border-color: var(--green);
-    color: var(--green); font-weight: 600;
-  }
-  .opt-btn.wrong {
-    background: var(--red-light); border-color: var(--red);
-    color: var(--red);
-  }
-  .opt-btn.reveal {
-    background: var(--green-light); border-color: var(--green);
-    color: var(--green); font-weight: 600;
-  }
-  .opt-btn.dim { opacity: .35; }
-
-  .feedback-row {
-    text-align: center; min-height: 44px;
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px; margin-bottom: 16px;
-  }
-  .fb-icon { font-size: 20px; }
-  .fb-text { font-size: 14px; font-weight: 600; }
-  .fb-text.good { color: var(--green); }
-  .fb-text.bad { color: var(--red); }
-
-  .next-btn {
-    width: 100%; padding: 15px;
-    background: var(--dark); color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px; font-weight: 700;
-    border: none; border-radius: 14px; cursor: pointer;
-    letter-spacing: .02em; transition: all .2s;
-    display: none;
-  }
-  .next-btn:hover { background: var(--blue); }
-  .next-btn.visible { display: block; }
-
-  /* ── FINISH ── */
-  #finish {
-    background: var(--cream);
-    align-items: center; justify-content: center;
-    padding: 40px 24px; text-align: center;
-    position: relative; overflow: hidden;
-  }
-  #finish .home-bg { position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 500px 400px at 50% 30%, rgba(200,150,58,.1) 0%, transparent 70%);
-  }
-
-  .trophy { font-size: 64px; margin-bottom: 16px; position: relative; z-index: 1; }
-
-  .finish-score {
-    font-family: 'Syne', sans-serif;
-    font-size: 72px; font-weight: 800; color: var(--dark);
-    line-height: 1; margin-bottom: 4px; position: relative; z-index: 1;
-  }
-  .finish-total { font-size: 16px; color: var(--mid); margin-bottom: 8px; position: relative; z-index: 1; }
-  .finish-msg {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px; font-weight: 700; color: var(--dark);
-    margin-bottom: 32px; position: relative; z-index: 1;
-  }
-
-  .finish-lessons {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: center; max-width: 360px;
-    margin: 0 auto 32px; position: relative; z-index: 1;
-  }
-  .fl-badge {
-    background: var(--green-light);
-    border: 1px solid rgba(45,90,39,.2);
-    border-radius: 20px; padding: 4px 14px;
-    font-size: 12px; font-weight: 600; color: var(--green);
-  }
-
-  .finish-btns {
-    display: flex; gap: 12px; justify-content: center;
-    position: relative; z-index: 1; flex-wrap: wrap;
-  }
-  .finish-btn {
-    padding: 13px 28px; border-radius: 50px;
-    font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700;
-    cursor: pointer; transition: all .2s; border: none;
-  }
-  .finish-btn.primary { background: var(--dark); color: white; }
-  .finish-btn.primary:hover { background: var(--blue); }
-  .finish-btn.secondary { background: white; color: var(--dark); border: 1.5px solid var(--sand); }
-  .finish-btn.secondary:hover { border-color: var(--brown); }
-
-  /* ── ANIMATIONS ── */
-  @keyframes pop { 0%{transform:scale(.8);opacity:0} 60%{transform:scale(1.05)} 100%{transform:scale(1);opacity:1} }
-  .pop { animation: pop .3s ease forwards; }
-
-  @media (max-width: 380px) {
-    .options-grid { grid-template-columns: 1fr; }
-    .mode-grid { grid-template-columns: 1fr; }
-    .mode-grid .mode-card { display: flex; align-items: center; gap: 12px; text-align: left; }
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English with Hakam | التطبيق التفاعلي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a2a6c; --accent: #b21f1f; --gold: #fdbb2d; --light: #f8f9fa; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--light); margin: 0; color: #333; }
+        .header { background: linear-gradient(to right, var(--primary), var(--accent)); color: white; padding: 40px 20px; text-align: center; }
+        .main-menu { max-width: 900px; margin: -30px auto 20px; background: white; border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .unit-title { background: var(--primary); color: white; padding: 8px 15px; border-radius: 8px; margin: 15px 0; display: inline-block; font-size: 0.9rem; }
+        .lesson-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .lesson-card { background: #fff; border: 2px solid #eee; border-radius: 12px; padding: 12px; cursor: pointer; transition: 0.3s; text-align: right; }
+        .lesson-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        #app-view { display: none; padding: 15px; max-width: 700px; margin: auto; }
+        .chat-container { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .bubble { max-width: 85%; padding: 12px; border-radius: 15px; margin: 8px 0; font-family: 'Poppins', sans-serif; direction: ltr; text-align: left; cursor: pointer; position: relative; line-height: 1.4; }
+        .hakam { align-self: flex-start; background: #e3f2fd; border-left: 5px solid #2196f3; }
+        .zeina { align-self: flex-end; background: #fff3e0; border-right: 5px solid #ff9800; text-align: right; }
+        .slang { color: var(--accent); text-decoration: underline dotted; font-weight: bold; }
+        .controls { margin: 15px 0; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        button { padding: 8px 16px; border-radius: 20px; border: none; background: var(--primary); color: white; cursor: pointer; font-family: 'Tajawal'; font-size: 0.85rem; }
+        .role-btn { background: var(--gold); color: #000; }
+        .hidden-text { color: transparent !important; background: #eee !important; border: 1px dashed #ccc; }
+    </style>
 </head>
 <body>
 
-<!-- HOME -->
-<div id="home" class="screen active">
-  <div class="home-bg"></div>
-
-  <div class="brand">
-    <svg width="28" height="18" viewBox="0 0 28 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="28" height="18" rx="3" fill="#00247D"/>
-      <path d="M0 0 L28 18 M28 0 L0 18" stroke="white" stroke-width="4"/>
-      <path d="M0 0 L28 18 M28 0 L0 18" stroke="#CF142B" stroke-width="2"/>
-      <rect x="11" y="0" width="6" height="18" fill="white"/>
-      <rect x="0" y="6" width="28" height="6" fill="white"/>
-      <rect x="12" y="0" width="4" height="18" fill="#CF142B"/>
-      <rect x="0" y="7" width="28" height="4" fill="#CF142B"/>
-    </svg>
-    <span class="brand-text">English with Hakam</span>
-  </div>
-
-  <h1 class="home-title">Street<br><span>Trainer</span></h1>
-  <p class="home-sub">Master London slang from<br>all 12 lessons — innit?</p>
-
-  <div class="mode-grid">
-    <div class="mode-card selected" onclick="selectMode('street',this)">
-      <div class="mode-icon">🗣️</div>
-      <div class="mode-name">Street</div>
-      <div class="mode-desc">→ Formal</div>
+<div id="home-view">
+    <div class="header">
+        <h1>English with Hakam 🇬🇧</h1>
+        <p>الملزمة التفاعلية - تعلم الإنجليزية البريطانية</p>
     </div>
-    <div class="mode-card" onclick="selectMode('formal',this)">
-      <div class="mode-icon">📋</div>
-      <div class="mode-name">Formal</div>
-      <div class="mode-desc">→ Street</div>
+    <div class="main-menu">
+        <div class="unit-title">الوحدة الأولى: التعارف</div>
+        <div class="lesson-grid">
+            <div class="lesson-card" onclick="loadLesson(1)"><strong>Lesson 1</strong><p>Hello, I'm Hakam!</p></div>
+            <div class="lesson-card" onclick="loadLesson(2)"><strong>Lesson 2</strong><p>Home & Origins</p></div>
+            <div class="lesson-card" onclick="loadLesson(3)"><strong>Lesson 3</strong><p>Jobs & Work</p></div>
+            <div class="lesson-card" onclick="loadLesson(4)"><strong>Lesson 4</strong><p>What are you up to?</p></div>
+        </div>
+        <div class="unit-title">الوحدة الثانية: في الخارج</div>
+        <div class="lesson-grid">
+            <div class="lesson-card" onclick="loadLesson(5)"><strong>Lesson 5</strong><p>Ordering Coffee</p></div>
+        </div>
     </div>
-    <div class="mode-card" onclick="selectMode('mixed',this)">
-      <div class="mode-icon">🔀</div>
-      <div class="mode-name">Mixed</div>
-      <div class="mode-desc">Both ways</div>
-    </div>
-  </div>
-
-  <button class="start-btn" onclick="startGame()">Start — Let's go! 🇬🇧</button>
-
-  <div class="home-stats">
-    <div class="stat"><div class="stat-n">24</div><div class="stat-l">phrases</div></div>
-    <div class="stat"><div class="stat-n">12</div><div class="stat-l">lessons</div></div>
-    <div class="stat"><div class="stat-n">3</div><div class="stat-l">modes</div></div>
-  </div>
 </div>
 
-<!-- GAME -->
-<div id="game" class="screen">
-  <div class="game-header">
-    <button class="back-btn" onclick="goHome()">←</button>
-    <div class="progress-wrap">
-      <div class="progress-meta">
-        <span id="q-label">Question 1 of 24</span>
-        <span id="mode-label">Street → Formal</span>
-      </div>
-      <div class="progress-track"><div class="progress-bar" id="prog-bar"></div></div>
+<div id="app-view">
+    <div class="controls">
+        <button onclick="goHome()">🏠 القائمة</button>
+        <button class="role-btn" onclick="toggleRole('hakam')">إخفاء دور حكم</button>
+        <button class="role-btn" onclick="toggleRole('zeina')">إخفاء دور زينة</button>
     </div>
-    <div class="score-badge" id="score-badge">0 pts</div>
-  </div>
-
-  <div class="lesson-dots" id="lesson-dots"></div>
-
-  <div class="question-area">
-    <div class="direction-tag" id="dir-tag">🇬🇧 What does this mean?</div>
-
-    <div class="question-card" id="q-card">
-      <div class="q-lesson" id="q-lesson">Lesson 1</div>
-      <div class="q-word" id="q-word">Alright mate</div>
-      <div class="q-hint" id="q-hint"></div>
-    </div>
-
-    <div class="options-grid" id="opts-grid"></div>
-
-    <div class="feedback-row" id="fb-row"></div>
-
-    <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next →</button>
-  </div>
-</div>
-
-<!-- FINISH -->
-<div id="finish" class="screen">
-  <div class="home-bg"></div>
-  <div class="trophy" id="trophy">🏆</div>
-  <div class="finish-score" id="fin-score"></div>
-  <div class="finish-total" id="fin-total"></div>
-  <div class="finish-msg" id="fin-msg"></div>
-  <div class="finish-lessons" id="fin-lessons"></div>
-  <div class="finish-btns">
-    <button class="finish-btn primary" onclick="startGame()">Play again</button>
-    <button class="finish-btn secondary" onclick="goHome()">Change mode</button>
-  </div>
+    <h3 id="lesson-name" style="text-align: center; color: var(--primary);"></h3>
+    <div class="chat-container" id="chat-box"></div>
+    <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 15px;">اضغط على النص للسماع 🔊 | الكلمات الحمراء هي مصطلحات عامية</p>
 </div>
 
 <script>
-const phrases = [
-  {l:1, s:"Alright mate / Hiya", f:"Hello / How are you?"},
-  {l:1, s:"Sound / Nice one", f:"Good / Great / Thank you"},
-  {l:2, s:"Whereabouts", f:"Where exactly?"},
-  {l:2, s:"Posh / Rough", f:"High-class / Dangerous"},
-  {l:3, s:"Grafting", f:"Working very hard"},
-  {l:3, s:"Fair play", f:"I respect that / Well done"},
-  {l:4, s:"What you up to?", f:"What are you doing?"},
-  {l:4, s:"Give you a bell", f:"Call you on the phone"},
-  {l:5, s:"Can I get a...?", f:"May I have a...?"},
-  {l:5, s:"To stay or to go?", f:"Eat here or take away?"},
-  {l:6, s:"Quid / Fiver / Tenner", f:"Pound / £5 / £10"},
-  {l:6, s:"A bargain / Rip-off", f:"Good price / Too expensive"},
-  {l:7, s:"Half past...", f:"(Hour) : 30"},
-  {l:7, s:"Tied up", f:"Very busy"},
-  {l:8, s:"Tube / Lift", f:"Subway / Elevator"},
-  {l:8, s:"A stone's throw", f:"Very close"},
-  {l:9, s:"Lovely, isn't it?", f:"It's nice, right?"},
-  {l:9, s:"Chilly / Freezing", f:"Cold / Very cold"},
-  {l:10, s:"I'm into...", f:"I am interested in..."},
-  {l:10, s:"Not my cup of tea", f:"I don't like it"},
-  {l:11, s:"Poorly / Under the weather", f:"Feeling sick / Unwell"},
-  {l:11, s:"The Chemists", f:"The Pharmacy"},
-  {l:12, s:"Can't complain", f:"I am doing well"},
-  {l:12, s:"Better be off", f:"I should leave now"}
-];
+    const lessonData = {
+        1: { name: "Hello, I'm Hakam!", content: [{role:'hakam', text:"Alright mate, I'm Hakam.", slang:"Alright mate: هلا يا صاحبي"}, {role:'zeina', text:"Hi Hakam, nice one, good to meet ya.", slang:"Nice one: ممتاز"}] },
+        2: { name: "Whereabouts are you from?", content: [{role:'hakam', text:"Whereabouts are you from originally?", slang:"Whereabouts: أين بالضبط"}, {role:'zeina', text:"I'm from a tiny village up north.", slang:"Up north: في الشمال"}] },
+        3: { name: "What do you do for a living?", content: [{role:'hakam', text:"So, what do you do for a living?", slang:"Living: لقمة العيش"}, {role:'zeina', text:"I'm a freelance designer. It's a bit of a graft.", slang:"Graft: عمل شاق"}] },
+        4: { name: "What are you up to?", content: [{role:'hakam', text:"Morning! You alright?", slang:"You alright?: كيفك؟"}, {role:'zeina', text:"Just grabbing a cuppa. Weather's rubbish!", slang:"Cuppa: شاي / Rubbish: سيء"}] },
+        5: { name: "Can I get a coffee, please?", content: [{role:'zeina', text:"Can I get a large latte to stay, please?", slang:"To stay: محلي (هنا)"}, {role:'hakam', text:"Anything else? That'll be four fifty.", slang:"That'll be: الحساب سيكون"}] }
+    };
 
-let mode = 'street', questions = [], idx = 0, score = 0, doneLessons = new Set(), answered = false;
-
-function selectMode(m, el) {
-  mode = m;
-  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-function shuffle(a) { return [...a].sort(() => Math.random() - .5); }
-
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-
-function goHome() { show('home'); }
-
-function buildQuestions() {
-  return shuffle(phrases).map(p => {
-    const isStreet = mode === 'mixed' ? Math.random() > .5 : mode === 'street';
-    const q = isStreet ? p.s : p.f;
-    const correct = isStreet ? p.f : p.s;
-    const pool = shuffle(phrases.filter(x => x !== p)).map(x => isStreet ? x.f : x.s);
-    return { q, correct, lesson: p.l, opts: shuffle([correct, ...pool.slice(0,3)]) };
-  });
-}
-
-function startGame() {
-  questions = buildQuestions();
-  idx = 0; score = 0; doneLessons = new Set(); answered = false;
-  const modeLabel = mode === 'street' ? 'Street → Formal' : mode === 'formal' ? 'Formal → Street' : 'Mixed';
-  document.getElementById('mode-label').textContent = modeLabel;
-  show('game');
-  renderQ();
-}
-
-function renderDots() {
-  let h = '';
-  for (let l = 1; l <= 12; l++) {
-    const cl = doneLessons.has(l) ? 'done' : questions[idx]?.lesson === l ? 'active' : '';
-    h += `<div class="ldot ${cl}">${l}</div>`;
-  }
-  document.getElementById('lesson-dots').innerHTML = h;
-}
-
-function renderQ() {
-  if (idx >= questions.length) { showFinish(); return; }
-  const q = questions[idx];
-  answered = false;
-
-  const pct = idx / questions.length * 100;
-  document.getElementById('prog-bar').style.width = pct + '%';
-  document.getElementById('q-label').textContent = `Question ${idx+1} of ${questions.length}`;
-  document.getElementById('score-badge').textContent = score + ' pts';
-  document.getElementById('q-lesson').textContent = `Lesson ${q.lesson}`;
-  document.getElementById('q-word').textContent = q.q;
-
-  const isStreet = mode === 'mixed'
-    ? phrases.find(p => p.s === q.q || p.f === q.q)?.s === q.q
-    : mode === 'street';
-  document.getElementById('dir-tag').textContent = isStreet ? '🗣️ Street → What does this mean?' : '📋 Formal → What\'s the street way?';
-
-  let optsHTML = '';
-  q.opts.forEach((o, i) => {
-    optsHTML += `<button class="opt-btn" id="opt${i}" onclick="pick(${i})">${o}</button>`;
-  });
-  document.getElementById('opts-grid').innerHTML = optsHTML;
-  document.getElementById('fb-row').innerHTML = '';
-  const nb = document.getElementById('next-btn');
-  nb.classList.remove('visible');
-  nb.textContent = idx < questions.length - 1 ? 'Next →' : 'See results →';
-
-  renderDots();
-}
-
-function pick(i) {
-  if (answered) return;
-  answered = true;
-  const q = questions[idx];
-  const btns = document.querySelectorAll('.opt-btn');
-
-  btns.forEach(b => { b.disabled = true; b.classList.add('dim'); });
-
-  if (q.opts[i] === q.correct) {
-    btns[i].classList.remove('dim'); btns[i].classList.add('correct');
-    document.getElementById('fb-row').innerHTML = `<span class="fb-icon">✅</span><span class="fb-text good">Spot on, mate!</span>`;
-    score++;
-    doneLessons.add(q.lesson);
-  } else {
-    btns[i].classList.remove('dim'); btns[i].classList.add('wrong');
-    q.opts.forEach((o, j) => {
-      if (o === q.correct) { btns[j].classList.remove('dim'); btns[j].classList.add('reveal'); }
-    });
-    document.getElementById('fb-row').innerHTML = `<span class="fb-icon">❌</span><span class="fb-text bad">Not quite — correct answer highlighted</span>`;
-  }
-
-  document.getElementById('score-badge').textContent = score + ' pts';
-  document.getElementById('next-btn').classList.add('visible');
-  renderDots();
-}
-
-function nextQuestion() { idx++; renderQ(); }
-
-function showFinish() {
-  const total = questions.length;
-  const pct = Math.round(score / total * 100);
-  document.getElementById('prog-bar').style.width = '100%';
-
-  let trophy = pct >= 80 ? '🏆' : pct >= 50 ? '🎯' : '💪';
-  let msg = pct >= 80 ? "Brilliant! You're proper fluent 🇬🇧"
-          : pct >= 60 ? "Not bad at all — keep grafting!"
-          : pct >= 40 ? "Fair play for trying. Practice more!"
-          : "It takes a bit of practice and a lot of tea!";
-
-  document.getElementById('trophy').textContent = trophy;
-  document.getElementById('fin-score').textContent = score;
-  document.getElementById('fin-total').textContent = `out of ${total} questions`;
-  document.getElementById('fin-msg').textContent = msg;
-
-  let lessonsHTML = '';
-  doneLessons.forEach(l => { lessonsHTML += `<span class="fl-badge">Lesson ${l} ✓</span>`; });
-  document.getElementById('fin-lessons').innerHTML = lessonsHTML || '<span style="color:#8B6F52;font-size:13px">Keep going — you\'ll get there!</span>';
-
-  show('finish');
-}
+    let hiddenRole = null;
+    function loadLesson(id) {
+        const lesson = lessonData[id];
+        document.getElementById('home-view').style.display = 'none';
+        document.getElementById('app-view').style.display = 'block';
+        document.getElementById('lesson-name').innerText = lesson.name;
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML = '';
+        lesson.content.forEach(line => {
+            const div = document.createElement('div');
+            div.className = `bubble ${line.role}`;
+            if(hiddenRole === line.role) div.classList.add('hidden-text');
+            let txt = line.text;
+            if(line.slang) { const s = line.slang.split(':')[0]; txt = txt.replace(s, `<span class="slang" title="${line.slang}">${s}</span>`); }
+            div.innerHTML = `<strong>${line.role.toUpperCase()}:</strong><br>${txt}`;
+            div.onclick = () => { if(div.classList.contains('hidden-text')) div.classList.remove('hidden-text'); else speak(line.text); };
+            chatBox.appendChild(div);
+        });
+    }
+    function toggleRole(r) { hiddenRole = (hiddenRole === r) ? null : r; loadLesson(Object.keys(lessonData).find(k => lessonData[k].name === document.getElementById('lesson-name').innerText)); }
+    function goHome() { document.getElementById('home-view').style.display = 'block'; document.getElementById('app-view').style.display = 'none'; hiddenRole = null; }
+    function speak(t) { const m = new SpeechSynthesisUtterance(t); m.lang = 'en-GB'; window.speechSynthesis.speak(m); }
 </script>
 </body>
 </html>
