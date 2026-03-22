@@ -8,23 +8,21 @@
         :root { --main: #27ae60; --dark: #2c3e50; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
         .container { width: 95%; max-width: 800px; padding: 20px; }
-        
-        /* تصميم كرت الدخول */
-        .login-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
         input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
         button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
         
-        /* تصميم صفحة الدروس - مخفية في البداية */
-        #lesson-page { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .video-box { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; background: #000; margin-bottom: 1.5rem; }
-        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .lesson-title { color: var(--dark); border-right: 5px solid var(--main); padding-right: 15px; margin-bottom: 20px; }
+        /* قسم الدروس - مخفي افتراضياً */
+        #lesson-page { display: none; }
+        .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; margin-top: 20px; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .logout-btn { background: #e74c3c; margin-top: 20px; width: auto; padding: 10px 20px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="login-section" class="login-card">
+    <div id="login-section" class="card">
         <h2>English With Hakam</h2>
         <p>سجل دخولك لمشاهدة الدروس</p>
         <input type="email" id="email" placeholder="البريد الإلكتروني">
@@ -33,14 +31,15 @@
         <p id="msg" style="color:red; display:none; margin-top:10px;"></p>
     </div>
 
-    <div id="lesson-page">
-        <h2 class="lesson-title">أهلاً بك يا بطل في درس اليوم!</h2>
-        <div class="video-box">
+    <div id="lesson-page" class="card">
+        <h2 style="color: var(--main);">مرحباً بك في لوحة الدروس</h2>
+        <p>شاهد فيديو اليوم واستعد للاختبار:</p>
+        
+        <div class="video-container">
             <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
         </div>
-        <h3>وصف الدرس:</h3>
-        <p>هنا يمكنك كتابة ملاحظاتك للطلاب أو شرح بسيط عن الفيديو.</p>
-        <button onclick="location.reload()" style="background:#888;">تسجيل الخروج</button>
+
+        <button class="logout-btn" onclick="location.reload()">تسجيل الخروج</button>
     </div>
 </div>
 
@@ -67,7 +66,7 @@
 
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-          // إخفاء صفحة الدخول وإظهار صفحة الدروس
+          // بدلاً من التنبيه فقط.. نقوم بتبديل المحتوى
           document.getElementById('login-section').style.display = 'none';
           document.getElementById('lesson-page').style.display = 'block';
       })
@@ -77,6 +76,5 @@
       });
   }
 </script>
-
 </body>
 </html>
