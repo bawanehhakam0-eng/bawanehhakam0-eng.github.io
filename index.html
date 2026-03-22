@@ -3,33 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English With Hakam</title>
+    <title>English With Hakam | منصة الدروس</title>
     <style>
         :root { --main: #27ae60; --dark: #2c3e50; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 90%; max-width: 350px; text-align: center; }
-        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        button:hover { background: #219150; }
-        #msg { color: #e74c3c; margin-top: 10px; font-size: 0.9rem; display: none; background: #fdedec; padding: 8px; border-radius: 5px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
+        .container { width: 95%; max-width: 800px; padding: 20px; }
+        
+        /* تصميم كرت الدخول */
+        .login-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        
+        /* تصميم صفحة الدروس - مخفية في البداية */
+        #lesson-page { display: none; background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .video-box { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 10px; background: #000; margin-bottom: 1.5rem; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .lesson-title { color: var(--dark); border-right: 5px solid var(--main); padding-right: 15px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>English With Hakam</h2>
-    <p>سجل دخولك للبدء</p>
-    <input type="email" id="email" placeholder="البريد الإلكتروني">
-    <input type="password" id="pass" placeholder="كلمة المرور">
-    <button onclick="login()">دخول الطالب</button>
-    <div id="msg"></div>
+<div class="container">
+    <div id="login-section" class="login-card">
+        <h2>English With Hakam</h2>
+        <p>سجل دخولك لمشاهدة الدروس</p>
+        <input type="email" id="email" placeholder="البريد الإلكتروني">
+        <input type="password" id="pass" placeholder="كلمة المرور">
+        <button onclick="login()">دخول الطالب</button>
+        <p id="msg" style="color:red; display:none; margin-top:10px;"></p>
+    </div>
+
+    <div id="lesson-page">
+        <h2 class="lesson-title">أهلاً بك يا بطل في درس اليوم!</h2>
+        <div class="video-box">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        </div>
+        <h3>وصف الدرس:</h3>
+        <p>هنا يمكنك كتابة ملاحظاتك للطلاب أو شرح بسيط عن الفيديو.</p>
+        <button onclick="location.reload()" style="background:#888;">تسجيل الخروج</button>
+    </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // إعدادات مشروعك الجديد (تم استخراجها من صورتك الأخيرة بدقة)
   const firebaseConfig = {
     apiKey: "AIzaSyBevYgKumOefR8llKZXgLu4neOptOO9Dzc",
     authDomain: "english-with-hakam.firebaseapp.com",
@@ -46,24 +64,19 @@
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('pass').value;
     const msg = document.getElementById('msg');
-    msg.style.display = 'none';
-
-    if(!email || !password) {
-        msg.style.display = 'block';
-        msg.innerText = "يرجى إدخال البريد وكلمة السر";
-        return;
-    }
 
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-          alert("أهلاً بك يا أستاذ حكم! تم الدخول بنجاح.");
+          // إخفاء صفحة الدخول وإظهار صفحة الدروس
+          document.getElementById('login-section').style.display = 'none';
+          document.getElementById('lesson-page').style.display = 'block';
       })
       .catch((error) => {
           msg.style.display = 'block';
-          if(error.code === 'auth/invalid-credential') msg.innerText = "الإيميل أو كلمة السر خطأ";
-          else msg.innerText = "خطأ: " + error.code;
+          msg.innerText = "خطأ في الإيميل أو كلمة السر";
       });
   }
 </script>
+
 </body>
 </html>
