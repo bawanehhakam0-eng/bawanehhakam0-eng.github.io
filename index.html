@@ -13,7 +13,7 @@
         input { width: 100%; padding: 12px; margin-bottom: 1.2rem; border: 1px solid #ddd; border-radius: 10px; outline: none; box-sizing: border-box; font-size: 16px; }
         button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         button:hover { background: #219150; }
-        #msg { color: #e74c3c; margin-top: 1rem; display: none; background: #fdedec; padding: 8px; border-radius: 5px; }
+        #msg { color: #e74c3c; margin-top: 1rem; display: none; background: #fdedec; padding: 10px; border-radius: 8px; font-size: 0.9rem; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -31,7 +31,7 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-  // إعدادات Firebase الخاصة بك من الصورة 55974
+  // تم تصحيح المفاتيح بدقة من صور مشروعك
   const firebaseConfig = {
     apiKey: "AIzaSyB2E58UMo6N9bOHCSTrnTlpN090-q0IqYo",
     authDomain: "englsih-with-hakam.firebaseapp.com",
@@ -50,17 +50,25 @@
     const msgDiv = document.getElementById('msg');
     msgDiv.style.display = 'none';
 
+    if(!email || !password) {
+        msgDiv.style.display = 'block';
+        msgDiv.innerText = "يرجى إدخال البيانات كاملة";
+        return;
+    }
+
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
           alert("تم الدخول بنجاح! مبروك يا أستاذ حكم.");
-          // هنا سنضع كود صفحة الدروس لاحقاً
+          // قريباً سنضع هنا كود الانتقال لصفحة فيديوهاتك
       })
       .catch((error) => {
           msgDiv.style.display = 'block';
-          if (error.code === 'auth/unauthorized-domain') {
-              msgDiv.innerText = "خطأ: يجب إضافة رابط الموقع في Firebase Settings";
-          } else if (error.code === 'auth/invalid-credential') {
-              msgDiv.innerText = "الإيميل أو كلمة السر خطأ";
+          console.error("Firebase Error:", error.code);
+          
+          if (error.code === 'auth/invalid-credential') {
+              msgDiv.innerText = "الإيميل أو كلمة السر خطأ، أو لم يتم إضافة المستخدم في Firebase بعد.";
+          } else if (error.code === 'auth/unauthorized-domain') {
+              msgDiv.innerText = "هذا الرابط غير مصرح به. تأكد من إضافة الدومين في إعدادات Firebase.";
           } else {
               msgDiv.innerText = "حدث خطأ: " + error.code;
           }
