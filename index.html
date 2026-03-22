@@ -3,45 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English With Hakam | منصة الدروس</title>
+    <title>English With Hakam</title>
     <style>
         :root { --main: #27ae60; --dark: #2c3e50; }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-        .container { width: 95%; max-width: 800px; padding: 20px; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        
-        /* قسم الدروس - مخفي افتراضياً */
-        #lesson-page { display: none; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 400px; }
+        #lesson-page { display: none; width: 95%; max-width: 800px; }
         .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000; margin-top: 20px; }
         .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .logout-btn { background: #e74c3c; margin-top: 20px; width: auto; padding: 10px 20px; }
+        input { width: 100%; padding: 12px; margin-bottom: 1rem; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: var(--main); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="container">
     <div id="login-section" class="card">
         <h2>English With Hakam</h2>
-        <p>سجل دخولك لمشاهدة الدروس</p>
         <input type="email" id="email" placeholder="البريد الإلكتروني">
         <input type="password" id="pass" placeholder="كلمة المرور">
         <button onclick="login()">دخول الطالب</button>
-        <p id="msg" style="color:red; display:none; margin-top:10px;"></p>
     </div>
 
-    <div id="lesson-page" class="card">
-        <h2 style="color: var(--main);">مرحباً بك في لوحة الدروس</h2>
-        <p>شاهد فيديو اليوم واستعد للاختبار:</p>
-        
+    <div id="lesson-page" class="card" style="max-width:800px;">
+        <h2 style="color: var(--main);">مرحباً بك يا بطل!</h2>
         <div class="video-container">
             <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
         </div>
-
-        <button class="logout-btn" onclick="location.reload()">تسجيل الخروج</button>
+        <button onclick="location.reload()" style="background:#888; margin-top:20px;">تسجيل الخروج</button>
     </div>
-</div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -60,20 +49,15 @@
   const auth = getAuth(app);
 
   window.login = function() {
-    const email = document.getElementById('email').value.trim();
+    const email = document.getElementById('email').value;
     const password = document.getElementById('pass').value;
-    const msg = document.getElementById('msg');
 
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-          // بدلاً من التنبيه فقط.. نقوم بتبديل المحتوى
           document.getElementById('login-section').style.display = 'none';
           document.getElementById('lesson-page').style.display = 'block';
       })
-      .catch((error) => {
-          msg.style.display = 'block';
-          msg.innerText = "خطأ في الإيميل أو كلمة السر";
-      });
+      .catch((error) => { alert("خطأ في البيانات"); });
   }
 </script>
 </body>
