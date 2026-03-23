@@ -5,51 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English With Hakam | المنصة التعليمية</title>
     <style>
-        :root { --main: #075e54; --uk-blue: #00247d; --uk-red: #cf142b; }
+        :root { --main: #075e54; --uk-blue: #00247d; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0ebe3; margin: 0; padding: 20px; text-align: center; }
         .card { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .header h1 { color: var(--uk-blue); margin-bottom: 5px; }
-        .lesson-list { margin-top: 20px; text-align: right; }
-        .lesson-item { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; }
-        .lesson-item:active { background: #e8f5e9; transform: scale(0.98); }
-        .play-icon { background: var(--main); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        h1 { color: var(--uk-blue); }
+        .lesson-box { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .lesson-title { font-weight: bold; color: var(--main); display: block; margin-bottom: 10px; }
+        iframe { border: none; border-radius: 10px; width: 100%; height: 60px; background: #eee; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <div class="header">
-        <h1>English With Hakam 🇬🇧</h1>
-        <p>اضغط على الدرس للاستماع</p>
+    <h1>English With Hakam 🇬🇧</h1>
+    <p>استمع للمحادثات مباشرة من هنا:</p>
+
+    <div class="lesson-box">
+        <span class="lesson-title">Lesson 1: Greetings</span>
+        <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #555;">Alright mate, I’m Hakam!</p>
+        <iframe src="https://docs.google.com/viewer?srcid=1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-&pid=explorer&efp=re_viewer&a=v&chrome=false&embedded=true"></iframe>
     </div>
 
-    <div class="lesson-list">
-        <div class="lesson-item" onclick="playAudio('1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-')">
-            <div>
-                <strong>Lesson 1: Greetings</strong>
-                <div style="font-size: 0.8rem; color: #777;">Alright mate, I’m Hakam!</div>
-            </div>
-            <div class="play-icon">▶</div>
-        </div>
-    </div>
+    <p style="font-size: 0.8rem; color: #999;">ملاحظة: إذا لم يظهر المشغل، تأكد من تحديث الصفحة.</p>
 </div>
-
-<script>
-    function playAudio(fileId) {
-        // رابط معدل يضمن التشغيل المباشر من جوجل درايف
-        const audioUrl = `https://docs.google.com/uc?export=open&id=${fileId}`;
-        
-        // إنشاء عنصر صوتي جديد
-        const audio = new Audio(audioUrl);
-        
-        // محاولة التشغيل مع معالجة الأخطاء
-        audio.play().catch(error => {
-            console.error("Playback failed:", error);
-            // إذا فشل المشغل الداخلي، نفتح الرابط في صفحة جديدة كخطة بديلة
-            window.open(audioUrl, '_blank');
-        });
-    }
-</script>
 
 </body>
 </html>
