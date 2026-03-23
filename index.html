@@ -8,31 +8,25 @@
         :root { --main: #075e54; --uk-blue: #00247d; }
         body { font-family: 'Segoe UI', sans-serif; background: #e5ddd5; margin: 0; padding: 20px; text-align: center; }
         .card { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .lesson-box { background: #f0f0f0; padding: 20px; border-radius: 15px; margin-top: 20px; border-top: 5px solid var(--uk-blue); }
-        .play-btn { background: var(--main); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-size: 18px; width: 100%; font-weight: bold; margin-top: 15px; }
-        .play-btn:active { background: #128c7e; transform: scale(0.98); }
-        h1 { color: var(--uk-blue); font-size: 24px; }
+        .lesson-box { background: #f0f0f0; padding: 15px; border-radius: 15px; margin-top: 20px; border-right: 5px solid var(--uk-blue); }
+        h1 { color: var(--uk-blue); font-size: 22px; margin-bottom: 5px; }
+        iframe { border: none; border-radius: 10px; width: 100%; height: 50px; background: transparent; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h1>English With Hakam 🇬🇧</h1>
-    <p>أهلاً بك في منصة التدريب الصوتي</p>
+    <p>ملزمتك الصوتية التفاعلية</p>
 
     <div class="lesson-box">
-        <strong style="display:block; margin-bottom:10px;">Lesson 1: Greetings</strong>
-        <p style="color: #555;">Alright mate, I’m Hakam!</p>
+        <strong style="display:block; text-align:right;">Lesson 1: Greetings</strong>
+        <p style="color: #555; text-align:right; font-size: 0.9rem;">Alright mate, I’m Hakam!</p>
         
-        <audio id="hakamAudio">
-            <source src="https://docs.google.com/uc?export=download&id=1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-" type="audio/mpeg">
-            متصفحك لا يدعم تشغيل الصوت.
-        </audio>
-
-        <button class="play-btn" onclick="document.getElementById('hakamAudio').play()">▶ اضغط للاستماع للصوت</button>
+        <iframe src="https://docs.google.com/viewer?srcid=1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-&pid=explorer&efp=re_viewer&a=v&chrome=false&embedded=true"></iframe>
     </div>
 
-    <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">ملاحظة: إذا ضغطت ولم تسمع، تأكد من رفع صوت الهاتف.</p>
+    <p style="font-size: 0.7rem; color: #888; margin-top: 20px;">ملاحظة: انتظر ثواني ليحمل المشغل، ثم اضغط على زر المثلث الصغير.</p>
 </div>
 
 </body>
