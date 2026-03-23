@@ -11,9 +11,8 @@
         .header h1 { color: var(--uk-blue); margin-bottom: 5px; }
         .lesson-list { margin-top: 20px; text-align: right; }
         .lesson-item { background: #fff; border: 1px solid #ddd; padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; transition: 0.3s; display: flex; justify-content: space-between; align-items: center; }
-        .lesson-item:hover { border-color: var(--main); background: #f9fff9; }
-        .play-icon { background: var(--main); color: white; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .slang-tag { background: var(--uk-red); color: white; font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; margin-right: 10px; }
+        .lesson-item:active { background: #e8f5e9; transform: scale(0.98); }
+        .play-icon { background: var(--main); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     </style>
 </head>
 <body>
@@ -21,46 +20,34 @@
 <div class="card">
     <div class="header">
         <h1>English With Hakam 🇬🇧</h1>
-        <p>مرحباً بك في ملزمة المستوى A1 الصوتية</p>
+        <p>اضغط على الدرس للاستماع</p>
     </div>
 
     <div class="lesson-list">
         <div class="lesson-item" onclick="playAudio('1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-')">
             <div>
                 <strong>Lesson 1: Greetings</strong>
-                <div style="font-size: 0.8rem; color: #777;">التحيات والتعارف</div>
-            </div>
-            <div class="play-icon">▶</div>
-        </div>
-
-        <div class="lesson-item" onclick="playAudio('اضع_رابط_درس_2_هنا')">
-            <div>
-                <strong>Lesson 2: Origins</strong>
-                <div style="font-size: 0.8rem; color: #777;">من أين أنت؟</div>
-            </div>
-            <div class="play-icon">▶</div>
-        </div>
-
-        <div class="lesson-item" onclick="playAudio('اضع_رابط_درس_3_هنا')">
-            <div>
-                <strong>Lesson 3: Jobs</strong>
-                <div style="font-size: 0.8rem; color: #777;">العمل والوظائف</div>
+                <div style="font-size: 0.8rem; color: #777;">Alright mate, I’m Hakam!</div>
             </div>
             <div class="play-icon">▶</div>
         </div>
     </div>
-
-    <p style="font-size: 0.8rem; color: #999; margin-top: 20px;">اضغط على الدرس للاستماع للمحادثة</p>
 </div>
 
 <script>
     function playAudio(fileId) {
-        if(fileId.includes('اضع_رابط')) {
-            alert("هذا الدرس قيد التجهيز، سيتم إضافة الصوت قريباً!");
-            return;
-        }
-        const url = `https://docs.google.com/uc?export=download&id=${fileId}`;
-        new Audio(url).play();
+        // رابط معدل يضمن التشغيل المباشر من جوجل درايف
+        const audioUrl = `https://docs.google.com/uc?export=open&id=${fileId}`;
+        
+        // إنشاء عنصر صوتي جديد
+        const audio = new Audio(audioUrl);
+        
+        // محاولة التشغيل مع معالجة الأخطاء
+        audio.play().catch(error => {
+            console.error("Playback failed:", error);
+            // إذا فشل المشغل الداخلي، نفتح الرابط في صفحة جديدة كخطة بديلة
+            window.open(audioUrl, '_blank');
+        });
     }
 </script>
 
