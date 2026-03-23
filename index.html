@@ -6,27 +6,33 @@
     <title>English With Hakam | المنصة التعليمية</title>
     <style>
         :root { --main: #075e54; --uk-blue: #00247d; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f0ebe3; margin: 0; padding: 20px; text-align: center; }
-        .card { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        h1 { color: var(--uk-blue); }
-        .lesson-box { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .lesson-title { font-weight: bold; color: var(--main); display: block; margin-bottom: 10px; }
-        iframe { border: none; border-radius: 10px; width: 100%; height: 60px; background: #eee; }
+        body { font-family: 'Segoe UI', sans-serif; background: #e5ddd5; margin: 0; padding: 20px; text-align: center; }
+        .card { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .lesson-box { background: #f0f0f0; padding: 20px; border-radius: 15px; margin-top: 20px; border-top: 5px solid var(--uk-blue); }
+        .play-btn { background: var(--main); color: white; border: none; padding: 15px 30px; border-radius: 50px; cursor: pointer; font-size: 18px; width: 100%; font-weight: bold; margin-top: 15px; }
+        .play-btn:active { background: #128c7e; transform: scale(0.98); }
+        h1 { color: var(--uk-blue); font-size: 24px; }
     </style>
 </head>
 <body>
 
 <div class="card">
     <h1>English With Hakam 🇬🇧</h1>
-    <p>استمع للمحادثات مباشرة من هنا:</p>
+    <p>أهلاً بك في منصة التدريب الصوتي</p>
 
     <div class="lesson-box">
-        <span class="lesson-title">Lesson 1: Greetings</span>
-        <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: #555;">Alright mate, I’m Hakam!</p>
-        <iframe src="https://docs.google.com/viewer?srcid=1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-&pid=explorer&efp=re_viewer&a=v&chrome=false&embedded=true"></iframe>
+        <strong style="display:block; margin-bottom:10px;">Lesson 1: Greetings</strong>
+        <p style="color: #555;">Alright mate, I’m Hakam!</p>
+        
+        <audio id="hakamAudio">
+            <source src="https://docs.google.com/uc?export=download&id=1HkJpThJDyQiOWpzS0dD8DU-_HkKOfyK-" type="audio/mpeg">
+            متصفحك لا يدعم تشغيل الصوت.
+        </audio>
+
+        <button class="play-btn" onclick="document.getElementById('hakamAudio').play()">▶ اضغط للاستماع للصوت</button>
     </div>
 
-    <p style="font-size: 0.8rem; color: #999;">ملاحظة: إذا لم يظهر المشغل، تأكد من تحديث الصفحة.</p>
+    <p style="font-size: 0.8rem; color: #888; margin-top: 20px;">ملاحظة: إذا ضغطت ولم تسمع، تأكد من رفع صوت الهاتف.</p>
 </div>
 
 </body>
